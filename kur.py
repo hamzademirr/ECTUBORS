@@ -13,6 +13,7 @@ class kurBilgisi(commands.Cog):
 	async def yardim(self, message):
 		embed=discord.Embed(title="KOMUTLAR", description="============", color=0x00ffff)
 		embed.add_field(name="e!kur", value="Bazı para birimlerinin ve değerli madenlerin değerlerini gösterir", inline=False)
+		embed.add_field(name="e!akaryakıt", value="İstanbul avrupa bölgesindeki anlık akaryakıt fiyatlarını gösterir", inline=False)
 		embed.add_field(name="e!coins", value="Bazı kripto paraların değerlerini gösterir", inline=False)
 		embed.add_field(name="e!coin + coin ismi", value="Örnek: e!coin btc", inline=False)
 		embed.add_field(name="e!coin + coin ismi + adet", value="Örnek: e!coin btc 2", inline=False)
@@ -21,12 +22,13 @@ class kurBilgisi(commands.Cog):
 		
 	@commands.command()
 	async def kur(self, message):
-		c.kurcek()
+		
 			
-		dolar = c.dolar()[1] + " TL || " + c.dolar()[3]+"%"
-		euro = c.euro()[1] + " TL || " + c.euro()[3]+"%"
-		altin = c.altin()[1] + " TL || " + c.altin()[3].replace("%","") + "%"
-		hisse = c.hisse()[0] + " TL || " + c.hisse()[1].replace("%","") + "%"
+		dolar = c.dolar()[1] + " ₺ || " + c.dolar()[3]+"%"
+		euro = c.euro()[1] + " ₺ || " + c.euro()[3]+"%"
+		altin = c.altin()[1] + " ₺ || " + c.altin()[3].replace("%","") + "%"
+		hisse = c.hisse()[0] + " ₺ || " + c.hisse()[1].replace("%","") + "%"
+		petrol = c.petrol()[0] + " $ || " + c.petrol()[1].replace("%","") + "%"
 		
 		tarih = datetime.datetime.now()
 		saat = tarih.hour
@@ -38,6 +40,7 @@ class kurBilgisi(commands.Cog):
 		embed.add_field(name="Euro :euro:", value=euro, inline=False)
 		embed.add_field(name="Altın :yellow_circle:", value=altin, inline=False)
 		embed.add_field(name="Bist 100 :regional_indicator_b: ", value=hisse, inline=False)
+		embed.add_field(name="Petrol :oil: ", value=petrol, inline=False)
 		embed.set_footer(text="Son Güncelleme Tarihi: "+tarih)
 		await message.send(embed=embed)
 		
@@ -85,6 +88,29 @@ class kurBilgisi(commands.Cog):
 			coininfo = c.coin(args[0].upper()+"USDT")
 			coininfo = coininfo[0:7]
 			await message.send(args[0].upper()+": "+coininfo+"$")
+
+	@commands.command()
+	async def akaryakıt(self, message):
+		
+			
+		kursunsuz = c.akaryakıt("K95") + " ₺ "
+		dizel = c.akaryakıt("Mot50") + " ₺ "
+		prodizel = c.akaryakıt("MotPro") + " ₺ "
+		lpg = c.akaryakıt("PoGaz") + " ₺ "
+		
+		
+		tarih = datetime.datetime.now()
+		saat = tarih.hour
+		
+		tarih = str(saat) +"."+ str(tarih.minute) +"  "+ str(tarih.day) +"."+ str(tarih.month) +"."+ str(tarih.year)
+		
+		embed=discord.Embed(title = "İstanbul Avrupa Fiyatları Baz Alınmıştır" ,color=0x00ffff)
+		embed.add_field(name="Kurşunsuz 95: ", value=kursunsuz, inline=False)
+		embed.add_field(name="Diesel: ", value=dizel, inline=False)
+		embed.add_field(name="Pro Diesel: ", value=prodizel, inline=False)
+		embed.add_field(name="LPG: ", value=lpg, inline=False)
+		embed.set_footer(text="Son Güncelleme Tarihi: "+tarih)
+		await message.send(embed=embed)
 
 	
 def setup(bot):
